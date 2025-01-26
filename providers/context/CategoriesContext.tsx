@@ -14,6 +14,8 @@ interface Category {
 
 interface CategoryContextProps {
     categories: Category[];
+    isLoading: boolean;
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
     fetchCategories: () => Promise<void>;
 }
 
@@ -21,21 +23,34 @@ const CategoryContext = createContext<CategoryContextProps | undefined>(undefine
 
 export const CategoryProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const [categories, setCategories] = useState<Category[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const fetchCategories = useCallback(async () => {
-        const { data, error } = await supabase.from("category").select("*");
+        setIsLoading(true);
 
-        if (error) {
-            console.log("Error while fetching categories", error);
-            toast.error("Failed to fetch Categories", toastErrorOptions);
-            return;
-        } else {
-            setCategories(data || []);
+        try {
+            const { data, error } = await supabase.from("category").select("*"); 
+
+            if (error) {
+                console.log("Error while fetching categories", error);
+                toast.error("Failed to fetch Categories", toastErrorOptions);
+                return;
+            } else {
+                setCategories(data || []);
+            }
+        } catch (error) {
+            console.log("Unexpected Error occurred", error);
+            toast.error("An unexpected error occurred!", toastErrorOptions);
+        } finally {
+            setIsLoading(false);
         }
+
+
+        
     }, []);
 
     // Memoize the context value to avoid any re-renders
-    const contextValue = useMemo(() => ({ categories, fetchCategories }), [categories, fetchCategories]);
+    const contextValue = useMemo(() => ({ categories, fetchCategories, isLoading, setIsLoading }), [categories, fetchCategories, isLoading]);
 
     return (
         <CategoryContext.Provider
