@@ -12,6 +12,7 @@ import { supabase } from '@/utils/supabase/client';
 import { useUser } from '@clerk/nextjs';
 import toast, { Toaster } from "react-hot-toast";
 import { toastSuccessOptions } from '@/constants';
+import { useCategories } from '@/providers/context/CategoriesContext';
 
 
 
@@ -22,9 +23,6 @@ const formSchema = z.object({
     slug: z.string().min(2, {
         message: "Slug cannot be less than 2 characters"
     }),
-    subcategory: z.string().min(2, {
-        message: "sub category be less than 2 characters"
-    }),
     created_by: z.string().email({
         message: "Provide a valid email"
     })
@@ -32,7 +30,8 @@ const formSchema = z.object({
 
 const AddCategoryForm = () => {
     const { user } = useUser();
-    
+    const { fetchCategories } = useCategories();
+
     // define the form
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
@@ -41,7 +40,6 @@ const AddCategoryForm = () => {
         defaultValues: {
             category: "Clothing",
             slug: "clothing",
-            subcategory: "Men's Clothing",
             created_by: user?.primaryEmailAddress?.emailAddress
         }
     });
@@ -52,14 +50,18 @@ const AddCategoryForm = () => {
 
         try {
             const { data, error } = await supabase.from('category').insert([values]);
-            console.log({data});
+            console.log({ data });
             if (error) {
                 throw error;
+            } else {
+
+                toast.success("Category successfully created!", toastSuccessOptions);
+
+                fetchCategories();
+
+                form.reset();
             }
 
-            toast.success("Category successfully created!", toastSuccessOptions);
-
-            form.reset();
         } catch (error) {
             console.log(error);
         } finally {
@@ -83,21 +85,15 @@ const AddCategoryForm = () => {
                         placeholder='Enter slug...'
                         form={form}
                     />
-                    <FormInput
-                        name='subcategory'
-                        label='Sub Category'
-                        placeholder='Comma separated sub categories'
-                        form={form}
-                    />
                     <Button
                         type='submit'
                         className={isSubmitting ? "bg-gray-400 cursor-wait" : "cursor-pointer"}
                         disabled={isSubmitting}
                     >
-                    {isSubmitting ? (
+                        {isSubmitting ? (
                             <>
-                            <Loader2 className='animate-spin' />
-                            <span>Loading...</span>
+                                <Loader2 className='animate-spin' />
+                                <span>Loading...</span>
                             </>
                         ) : (
                             <span>Create Category</span>

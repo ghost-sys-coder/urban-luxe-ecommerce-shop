@@ -1,6 +1,6 @@
 import React from 'react'
 import AddCategoryForm from './create_form'
-import ExistingSubCategories from '@/components/shared/ExistingSubCategories'
+import ExistingCategories from '@/components/shared/ExistingCategories'
 
 const CreateCategory = () => {
     return (
@@ -8,7 +8,7 @@ const CreateCategory = () => {
             <h1 className='font-semibold text-2xl pb-3'>Create a new Category</h1>
             <div className="flex gap-5">
                 <AddCategoryForm />
-                <ExistingSubCategories />
+                <ExistingCategories />
             </div>
         </div>
     )
