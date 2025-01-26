@@ -201,6 +201,6 @@
     @apply my-4 flex flex-col;
 }
 
-.create_category-form button {
+/* .create_category-form button {
     @apply block mt-3;
-}
+} */

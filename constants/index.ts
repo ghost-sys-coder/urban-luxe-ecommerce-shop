@@ -1,5 +1,6 @@
 
 import { Inbox, BarChart2, Users, ShoppingCart, TrendingUp, AlertTriangle, LayoutDashboard } from "lucide-react"
+import { ToastPosition } from "react-hot-toast"
 
 // Additional Admin Parameters
 export const adminParameters = [
@@ -33,3 +34,28 @@ export const adminParameters = [
         ],
     },
 ]
+
+
+
+// react hot toast options
+export const toastSuccessOptions = {
+    position: 'top-right' as ToastPosition,
+    duration: 4000,
+    style: {
+      backgroundColor: 'lightgreen',
+      padding: 10,
+      borderRadius: 10,
+      color: '#fff'
+    }
+}
+
+export const toastErrorOptions ={
+    position: 'top-right' as ToastPosition,
+    duration: 3000,
+    className: 'bg-theme-500 text-white',
+    style: {
+        padding: '10px 15px',
+        borderRadius: '10px',
+        marginTop: '15px'
+    }
+}

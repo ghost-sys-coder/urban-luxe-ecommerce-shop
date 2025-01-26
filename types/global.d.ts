@@ -1,13 +1,12 @@
-import mongoose from "mongoose";
+export {}
+
+// Create a type for the roles
+export type Roles = 'admin' | 'client'
 
 declare global {
-    namespace NodeJS {
-      interface Global {
-        mongoose: {
-          conn: typeof mongoose | null;
-          promise: Promise<mongoose> | null;
-        };
-      }
+  interface CustomJwtSessionClaims {
+    metadata: {
+      role?: Roles
     }
   }
-  
+}

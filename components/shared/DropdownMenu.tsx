@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useUser } from '@clerk/nextjs';
 
 interface DropdownMenuProps {
   isSigned: boolean | undefined;
@@ -9,11 +10,13 @@ interface DropdownMenuProps {
 
 const DropdownMenu: React.FC<DropdownMenuProps> = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.role;
 
   const links = [
     { linkText: "Orders", linkUrl: "/orders" },
     { linkText: "Returns", linkUrl: "/returns" },
-    { linkText: "Admin", linkUrl: "/admin" },
+    ...(isAdmin ? [{ linkText: "Admin", linkUrl: "/admin" }] : []),
   ];
 
   const toggleDropdown = () => {
