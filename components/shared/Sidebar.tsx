@@ -9,14 +9,14 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet";
-import { LogOut, Menu, ShieldBan, ShoppingBag, ShoppingBasket, Undo2, UserPen } from 'lucide-react';
+import { LogIn, LogOut, Menu, ShieldBan, ShoppingBag, ShoppingBasket, Undo2, UserPen } from 'lucide-react';
 import Link from 'next/link';
-import { SignOutButton, useUser } from '@clerk/nextjs';
+import { SignOutButton, useUser, SignInButton } from '@clerk/nextjs';
 import { Button } from '../ui/button';
 
 const Sidebar = () => {
 
-    const { user } = useUser();
+    const { user, isSignedIn } = useUser();
     const isAdmin = user?.publicMetadata?.role === "admin";
 
     const sidebarLinks = [
@@ -45,12 +45,21 @@ const Sidebar = () => {
                                     <span>{link.text}</span>
                                 </Link>
                             ))}
-                            <SignOutButton>
-                                <Button className='w-[300px] mx-auto my-3 bg-primary absolute bottom-0'>
-                                    <LogOut />
-                                    <span>Sign Out</span>
-                                </Button>
-                            </SignOutButton>
+                            {isSignedIn ? (
+                                <SignOutButton>
+                                    <Button className='mx-auto my-3 bg-primary absolute bottom-0 left-5 right-5'>
+                                        <LogOut />
+                                        <span>Sign Out</span>
+                                    </Button>
+                                </SignOutButton>
+                            ) : (
+                                <SignInButton>
+                                    <Button className='mx-auto my-3 bg-primary absolute bottom-0 left-5 right-5'>
+                                        <LogIn />
+                                        <span>SignIn</span>
+                                    </Button>
+                                </SignInButton>
+                            )}
                         </SheetDescription>
                     </SheetHeader>
                 </SheetContent>
