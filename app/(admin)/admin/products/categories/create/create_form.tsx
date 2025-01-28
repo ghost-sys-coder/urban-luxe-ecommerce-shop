@@ -12,7 +12,7 @@ import { supabase } from '@/utils/supabase/client';
 import { useUser } from '@clerk/nextjs';
 import toast, { Toaster } from "react-hot-toast";
 import { toastSuccessOptions } from '@/constants';
-import { useCategories } from '@/providers/context/CategoriesContext';
+import { useCategories } from '@/providers/context/CategoriesContext';;
 
 
 
@@ -87,7 +87,7 @@ const AddCategoryForm = () => {
                     />
                     <Button
                         type='submit'
-                        className={isSubmitting ? "bg-gray-400 cursor-wait" : "cursor-pointer"}
+                        className={isSubmitting ? "bg-gray-400" : "cursor-pointer"}
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? (

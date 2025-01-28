@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 
 
 interface Category {
+    id: string;
     category: string;
     slug?: string;
     created_by: string;
