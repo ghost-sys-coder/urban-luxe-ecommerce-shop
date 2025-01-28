@@ -47,7 +47,7 @@ const formSchema = z.object({
 const CreateProductForm = () => {
     const [isCreating, setIsCreating] = useState<boolean>(false);
     const { user } = useUser();
-    const { fetchCategories, categories, isLoading } = useCategories();
+    const { fetchCategories } = useCategories();
 
     useEffect(() => {
         fetchCategories();
