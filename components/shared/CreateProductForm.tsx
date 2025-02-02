@@ -12,6 +12,8 @@ import ProductFormInput from '@/app/(admin)/admin/products/_components/ProductFo
 import toast from 'react-hot-toast';
 import { toastErrorOptions } from '@/constants';
 import { Loader2 } from 'lucide-react';
+import TipTap from './TipTap';
+import ProductCategory from './ProductCategory';
 
 
 // form schema
@@ -29,10 +31,10 @@ const formSchema = z.object({
         (value) => (value ? parseFloat(value as string) : undefined),
         z.number().min(1, { message: "Product price is required!" })
     ),
-    stockUnits: z.number().min(0, {
-        message: "Product Quantity is required!"
-    }),
-    units_sold: z.number(),
+    stockUnits: z.preprocess(
+        (value) => (value ? parseFloat(value as string) : undefined),
+        z.number().min(1, {message: "Stock units are required!"})
+    ),
     color: z.string().min(3, {
         message: "Product Color is reqiured!"
     }),
@@ -47,7 +49,7 @@ const formSchema = z.object({
 const CreateProductForm = () => {
     const [isCreating, setIsCreating] = useState<boolean>(false);
     const { user } = useUser();
-    const { fetchCategories } = useCategories();
+    const { fetchCategories, categories } = useCategories();
 
     useEffect(() => {
         fetchCategories();
@@ -62,7 +64,6 @@ const CreateProductForm = () => {
             category: "",
             price: 0,
             stockUnits: 0,
-            units_sold: 0,
             brand: "",
             color: "",
             created_by: user?.primaryEmailAddress?.emailAddress
@@ -92,6 +93,23 @@ const CreateProductForm = () => {
                             placeholder='Product name'
                             form={form}
                         />
+                        <div className="mb-4">
+                            <TipTap
+                                label='Product Description'
+                                name='description'
+                                placeholder='Enter product description...'
+                                content={form.watch("description")}
+                                onChange={(newContent: string) => {
+                                    form.setValue("description", newContent)
+                                }}
+                            />
+                        </div>
+                        <ProductFormInput
+                            name='stockUnits'
+                            label='Stock Units'
+                            placeholder='Available stock units'
+                            form={form}
+                        />
                     </form>
                 </Form>
             </div>
@@ -104,7 +122,25 @@ const CreateProductForm = () => {
                             placeholder='$100'
                             form={form}
                         />
-                        <Button type='submit' className={isCreating ? "bg-gray-400 w-full cursor-wait" : "w-full"} disabled={isCreating}>
+                        <ProductCategory
+                            categories={categories}
+                            name="category"
+                            label="Product Category"
+                        />
+                        <ProductFormInput
+                            name='color'
+                            label='Product Color(s)'
+                            placeholder='black, white, blue'
+                            form={form}
+                        />
+                        <ProductFormInput
+                            name='brand'
+                            label='Product brand'
+                            placeholder='Enter product brand'
+                            form={form}
+                        />
+                        <Button
+                            type='submit' className={isCreating ? "bg-gray-400 w-full cursor-wait" : "w-full"} disabled={isCreating}>
                             {isCreating ? (
                                 <>
                                     <Loader2 className='animate-spin' />
