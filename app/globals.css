@@ -2,7 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-
+.editor-container {
+    max-height: 300px; /* Set your desired maximum height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+    padding: 8px; /* Optional: Add some padding */
+    border-radius: 4px; /* Optional: Add border radius */
+}
 
 @layer base {
     :root {

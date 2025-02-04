@@ -41,8 +41,8 @@ const ProductCategory: React.FC<ProductCategoryProps> = ({ categories, name, lab
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectLabel>Categories</SelectLabel>
-                                    {categories?.map(({ category, slug="" }) => (
-                                        <SelectItem key={category} value={slug}>{category}</SelectItem>
+                                    {categories?.map(({ category }) => (
+                                        <SelectItem key={category} value={category}>{category}</SelectItem>
                                     ))}
                                 </SelectGroup>
                             </SelectContent>

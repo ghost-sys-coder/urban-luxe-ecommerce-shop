@@ -25,7 +25,7 @@ const Toolbar: FC<ToolbarProps> = ({ editor }) => {
     }
 
     return (
-        <div className="px-4 py-3 rounded-tl-md rounded-tr-md flex justify-between items-start w-full flex-wrap border border-gray-700">
+        <div className="px-4 py-3 rounded-tl-md rounded-tr-md flex justify-between items-start w-full flex-wrap shadow-lg">
             <div className="flex justify-start items-center gap-5 flex-wrap lg:w-10/12">
                 {/* Bold */}
                 <EditorButton

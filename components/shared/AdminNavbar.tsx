@@ -12,7 +12,7 @@ const AdminNavbar = () => {
   const username = user?.username;
 
   return (
-    <nav className='flex justify-between items-center gap-5 px-4 py-4 bg-white'>
+    <nav className='flex justify-between items-center gap-5 px-4 py-4 bg-white sticky top-0 z-20'>
       <div className="flex items-center justify-center relative">
         <Input
           type='search'

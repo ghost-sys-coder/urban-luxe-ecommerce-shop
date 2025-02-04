@@ -9,11 +9,13 @@ import { useForm } from 'react-hook-form';
 import { useCategories } from '@/providers/context/CategoriesContext';
 import { useUser } from '@clerk/nextjs';
 import ProductFormInput from '@/app/(admin)/admin/products/_components/ProductFormInput';
-import toast from 'react-hot-toast';
-import { toastErrorOptions } from '@/constants';
+import toast, { Toaster } from 'react-hot-toast';
+import { toastErrorOptions, toastSuccessOptions } from '@/constants';
 import { Loader2 } from 'lucide-react';
 import TipTap from './TipTap';
 import ProductCategory from './ProductCategory';
+import { supabase } from '@/utils/supabase/client';
+import ProductImagesModal from './ProductImagesModal';
 
 
 // form schema
@@ -48,6 +50,9 @@ const formSchema = z.object({
 
 const CreateProductForm = () => {
     const [isCreating, setIsCreating] = useState<boolean>(false);
+    const [showImagesModal, setShowImagesModal] = useState<boolean>(false);
+    const [createdProductId, setCreatedProductId] = useState<string | null>(null);
+
     const { user } = useUser();
     const { fetchCategories, categories } = useCategories();
 
@@ -74,7 +79,32 @@ const CreateProductForm = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsCreating(true);
         try {
-            console.log(values)
+            // upload product to supabase -- product
+            const { data, error } = await supabase.from("product").insert([{
+                name: values.productName,
+                description: values.description,
+                category: values.category,
+                price: values.price,
+                stock_units: values.stockUnits,
+                color: values.color,
+                brand: values.brand,
+                created_by: values.created_by
+            }]).select();
+
+            if (error) {
+                toast.error("Something went wrong", toastErrorOptions);
+                throw error;
+            }
+            toast.success("Product successfully created!", toastSuccessOptions);
+            console.log("Product created!", data);
+
+            // set the created product id
+            if (data && data[0]?.id) {
+                setCreatedProductId(data[0]?.id);
+            }
+
+            // launch the add images modal once the product has been create 
+            setShowImagesModal(true);
         } catch (error) {
             console.log("Product Creation failed", error);
             toast.error("Product Creation Failed", toastErrorOptions);
@@ -84,6 +114,7 @@ const CreateProductForm = () => {
     }
     return (
         <div className='flex gap-5'>
+            <Toaster />
             <div className="max-w-[700px] flex-1">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -104,12 +135,6 @@ const CreateProductForm = () => {
                                 }}
                             />
                         </div>
-                        <ProductFormInput
-                            name='stockUnits'
-                            label='Stock Units'
-                            placeholder='Available stock units'
-                            form={form}
-                        />
                     </form>
                 </Form>
             </div>
@@ -139,6 +164,12 @@ const CreateProductForm = () => {
                             placeholder='Enter product brand'
                             form={form}
                         />
+                        <ProductFormInput
+                            name='stockUnits'
+                            label='Stock Units'
+                            placeholder='Available stock units'
+                            form={form}
+                        />
                         <Button
                             type='submit' className={isCreating ? "bg-gray-400 w-full cursor-wait" : "w-full"} disabled={isCreating}>
                             {isCreating ? (
@@ -151,7 +182,14 @@ const CreateProductForm = () => {
                     </form>
                 </Form>
             </div>
-        </div>
+            {/* Product Images Modal */}
+            {showImagesModal && createdProductId && (
+                <ProductImagesModal
+                    productId={createdProductId}
+                    onClose={()=> setShowImagesModal(false)}
+                />
+            )}
+        </div> 
     )
 }
 

@@ -35,7 +35,7 @@ const TipTap: React.FC<ProductDescriptionFieldProps> = ({
         content: fieldValue || "<p></p>",
         editorProps: {
             attributes: {
-                class: "flex flex-col px-4 py-4 border-b border-r border-l border-gray-700 text-gray-400 items-start w-full gap-3 font-medium text-[16px] pt-4 rounded-md outline-none",
+                class: "flex flex-col px-4 py-4 shadow-md text-gray-400 items-start w-full gap-3 font-medium text-[16px] pt-4 rounded-md",
             },
         },
         onUpdate: ({ editor }) => {
@@ -51,7 +51,7 @@ const TipTap: React.FC<ProductDescriptionFieldProps> = ({
     }, [fieldValue, editor]);
 
     return (
-        <div>
+        <div className="">
             {label && <label className="block text-sm font-medium mb-2">{label}</label>}
             <Controller
                 name={name}
@@ -62,6 +62,7 @@ const TipTap: React.FC<ProductDescriptionFieldProps> = ({
                         <Editor
                             style={{ whiteSpace: "pre-line" }}
                             editor={editor}
+                            className="editor-container"
                         />
                         {error && (
                             <p className="text-sm text-destructive mt-1">
