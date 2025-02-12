@@ -11,6 +11,7 @@ interface Category {
     category: string;
     slug?: string;
     created_by: string;
+    image_url?: string;
 }
 
 interface CategoryContextProps {
@@ -31,12 +32,12 @@ export const CategoryProvider: React.FC<{children: ReactNode}> = ({children}) =>
 
         try {
             const { data, error } = await supabase.from("category").select("*"); 
-
             if (error) {
                 console.log("Error while fetching categories", error);
                 toast.error("Failed to fetch Categories", toastErrorOptions);
                 return;
             } else {
+                console.log(data);
                 setCategories(data || []);
             }
         } catch (error) {

@@ -103,14 +103,14 @@ const Herobox = () => {
                             />
                             {/* center this */}
                             <div className="absolute inset-0 flex flex-col justify-center items-center text-white">
-                                <h2 className='text-xl font-bold mt-2'>{name}
+                                <h2 className='text-xl font-bold mt-2 text-center'>{name}
                                 </h2>
                                 <Button className='mt-2'>Buy Product</Button>
                             </div>
                         </div>
                     )
                 })}
-            </div>
+            </div> 
 
             <button
                 type='button'

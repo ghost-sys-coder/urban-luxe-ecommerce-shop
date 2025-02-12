@@ -17,6 +17,7 @@ export interface Category {
   category: string;
   slug?: string;
   created_by: string;
+  image_url?: string;
 }
 
 export interface Product {
