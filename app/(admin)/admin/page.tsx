@@ -1,3 +1,4 @@
+import ProductsTable from '@/components/shared/ProductsTable'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import React from 'react'
@@ -16,6 +17,7 @@ const AdminPanel = () => {
           </Button>
         </div>
       </div>
+      <ProductsTable />
     </div>
   )
 }
