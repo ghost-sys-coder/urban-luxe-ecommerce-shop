@@ -4,6 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { UserProvider } from "@/providers/context/UserContext";
 import "./globals.css";
 import { CategoryProvider } from "@/providers/context/CategoriesContext";
+import { ProductProvider } from "@/providers/context/ProductsContext";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -28,9 +29,11 @@ export default function RootLayout({
           className={`${poppins.className} antialiased`}
         >
           <UserProvider>
-            <CategoryProvider>
-            <main>{children}</main>
-            </CategoryProvider>
+            <ProductProvider>
+              <CategoryProvider>
+                <main>{children}</main>
+              </CategoryProvider>
+            </ProductProvider>
           </UserProvider>
         </body>
       </html>

@@ -1,8 +1,12 @@
 import React from 'react'
+import ProductUpdateForm from '../../_components/ProductUpdateForm'
+
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+      <ProductUpdateForm />
+    </div>
   )
 }
 

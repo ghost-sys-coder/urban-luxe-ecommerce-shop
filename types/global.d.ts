@@ -33,6 +33,7 @@ export interface Product {
   rating?: boolean;
   stock_units?: number;
   units_sold?: number;
+  size?: string;
   color?: string;
   brand?: string;
   productImages?: ProductsImage[];

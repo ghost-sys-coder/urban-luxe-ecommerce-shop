@@ -43,7 +43,8 @@ const formSchema = z.object({
     brand: z.string(),
     created_by: z.string().email({
         message: "Provide a valid email"
-    })
+    }),
+    size: z.string()
 });
 
 
@@ -71,6 +72,7 @@ const CreateProductForm = () => {
             stockUnits: 0,
             brand: "",
             color: "",
+            size: "",
             created_by: user?.primaryEmailAddress?.emailAddress
         }
     });
@@ -122,6 +124,12 @@ const CreateProductForm = () => {
                             name='productName'
                             label='Product Name'
                             placeholder='Product name'
+                            form={form}
+                        />
+                        <ProductFormInput
+                            name='size'
+                            label='Product Size'
+                            placeholder='Separate sizes by commas ie 40, 42'
                             form={form}
                         />
                         <div className="mb-4">

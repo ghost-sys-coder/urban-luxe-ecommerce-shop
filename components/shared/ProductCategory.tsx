@@ -22,18 +22,21 @@ interface ProductCategoryProps {
     categories: Category[];
     name: string;
     label?: string;
+    description?: string;
+
 }
 
 const ProductCategory: React.FC<ProductCategoryProps> = ({ categories, name, label }) => {
     const { control } = useFormContext();
+
     return (
-        <div className="my-5">
-            {label && (<Label>{label}</Label>)}
+        <div className="flex-1 min-w-[300px]">
+            {label && (<Label className=''>{label}</Label>)}
             <Controller
                 name={name}
                 control={control}
                 render={({ field, fieldState: { error } }) => (
-                    <div>
+                    <div className='my-1'>
                         <Select onValueChange={field.onChange} value={field.value}>
                             <SelectTrigger className='w-full'>
                                 <SelectValue placeholder="Select product Category" />
