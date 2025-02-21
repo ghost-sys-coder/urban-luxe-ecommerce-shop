@@ -6,7 +6,7 @@ import DeleteProduct from "../../_components/DeleteProduct";
     return (
       <>
         <Toaster />
-        <DeleteProduct />
+        <DeleteProduct productId={""} />
       </>
     )
 }
