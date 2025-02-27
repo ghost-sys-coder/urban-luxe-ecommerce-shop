@@ -37,6 +37,10 @@ const formSchema = z.object({
         (value) => (value ? parseFloat(value as string) : undefined),
         z.number().min(1, {message: "Stock units are required!"})
     ),
+    unitsSold: z.preprocess(
+        (value) => (value ? parseFloat(value as string) : undefined),
+        z.number().min(1, {message: "Units sold are required!"})
+    ) ,
     color: z.string().min(3, {
         message: "Product Color is reqiured!"
     }),
@@ -73,6 +77,7 @@ const CreateProductForm = () => {
             brand: "",
             color: "",
             size: "",
+            unitsSold: 0,
             created_by: user?.primaryEmailAddress?.emailAddress
         }
     });
@@ -88,6 +93,7 @@ const CreateProductForm = () => {
                 category: values.category,
                 price: values.price,
                 stock_units: values.stockUnits,
+                units_sold: values.unitsSold,
                 color: values.color,
                 brand: values.brand,
                 created_by: values.created_by
@@ -124,6 +130,12 @@ const CreateProductForm = () => {
                             name='productName'
                             label='Product Name'
                             placeholder='Product name'
+                            form={form}
+                        />
+                        <ProductFormInput
+                            name='unitsSold'
+                            label='Units Sold'
+                            placeholder='10'
                             form={form}
                         />
                         <ProductFormInput

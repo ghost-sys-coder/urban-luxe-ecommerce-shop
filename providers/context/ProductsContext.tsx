@@ -18,6 +18,10 @@ interface ProductContextProps {
     setOpenProductDeletionBox: React.Dispatch<React.SetStateAction<boolean>>;
     setIsFetching: React.Dispatch<React.SetStateAction<boolean>>;
     isFetching: boolean;
+    isLoadingBestSellers: boolean;
+    setIsLoadingBestSellers: React.Dispatch<React.SetStateAction<boolean>>;
+    handleFetchBestSellers: () => Promise<void>;
+    bestSellers: Product[];
 }
 
 
@@ -29,6 +33,8 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
     const [isDeleting, setIsDeleting] = useState<boolean>(false);
     const [openProductDeletionBox, setOpenProductDeletionBox] = useState<boolean>(false);
     const [isFetching, setIsFetching] = useState<boolean>(false);
+    const [bestSellers, setBestSellers] = useState<Product[]>([]);
+    const [isLoadingBestSellers, setIsLoadingBestSellers] = useState<boolean>(false);
 
 
 
@@ -114,6 +120,29 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
     }, [])
 
 
+    // fetch best sellers -- product with more than 20 units sold
+    const handleFetchBestSellers = useCallback(async () => {
+        setIsLoadingBestSellers(false);
+
+        try {
+            const { data, error } = await supabase.from("product").select("*, productImages(product_id, url)").gte("units_sold", 20);
+
+            if (error) {
+                console.log("An error occured while fetching the best seller products", error);
+                return;
+            }
+
+            setBestSellers(data);
+            
+        } catch (error) {
+            console.log("Error loading best sellers", error);
+            return;
+        } finally {
+            setIsLoadingBestSellers(false);
+        }
+    }, [])
+
+
 
     // Memoize the context value to avoid any re-renders
     const contextValue = useMemo(() => ({
@@ -128,6 +157,10 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
         setOpenProductDeletionBox, 
         isFetching,
         setIsFetching,
+        bestSellers,
+        isLoadingBestSellers,
+        handleFetchBestSellers,
+        setIsLoadingBestSellers
     }), [
         products, 
         fetchProducts, 
@@ -136,6 +169,9 @@ export const ProductProvider: React.FC<{ children: ReactNode }> = ({ children })
         handleDeleteProduct, 
         openProductDeletionBox, 
         isFetching,
+        bestSellers,
+        handleFetchBestSellers,
+        isLoadingBestSellers
     ])
 
     return (

@@ -98,13 +98,13 @@ const CategoriesSlider = () => {
 
           return (
             <SwiperSlide key={id} className="bg-gray-100 rounded-md shadow-md py-4 px-2">
-              <div className="flex flex-col items-center gap-3">
+              <div className="flex flex-col items-center gap-1">
                 <Image
                   src={parsedImageUrl}
                   alt={category}
-                  width={100}
-                  height={100}
-                  className="w-16 h-16 object-cover rounded-2xl"
+                  width={50}
+                  height={50}
+                  className="w-10 h-10 object-cover rounded-2xl"
                   onError={(e) => (e.currentTarget.src = "/placeholder.jpeg")}
                 />
                 <p className="text-sm text-primary">{category}</p>

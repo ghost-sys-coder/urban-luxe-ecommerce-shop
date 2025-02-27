@@ -45,3 +45,18 @@ export interface ProductsImage {
   url: string;
   product_id: string;
 }
+
+
+export interface Areas {
+  id: string;
+  created_at: string;
+  district_id: string;
+  area: string;
+}
+
+
+export interface District {
+  id: string;
+  created_at: string;
+  district: string;
+}

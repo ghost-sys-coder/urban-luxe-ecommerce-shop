@@ -16,7 +16,7 @@ const Herobox = () => {
     const fetchProducts = useCallback(async () => {
         setIsLoading(true);
         try {
-            const { data, error } = await supabase.from("product").select("*, productImages(product_id, url)");
+            const { data, error } = await supabase.from("product").select("*, productImages(product_id, url)").limit(5);
 
             if (error) throw error;
 
@@ -44,12 +44,10 @@ const Herobox = () => {
         );
     }
 
-    useEffect(() => {
-        // Auto slide every 5 seconds
-        const interval = setInterval(goToNextSlide, 5000);
-        return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [products.length, slidesToShow]);
+    // useEffect(() => {
+    //     const interval = setInterval(goToNextSlide, 5000);
+    //     return () => clearInterval(interval);
+    // }, [products.length, slidesToShow]);
 
 
     useEffect(() => {

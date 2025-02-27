@@ -1,3 +1,4 @@
+import BestSellers from '@/components/frontend/BestSellers'
 import CategoriesSidebar from '@/components/frontend/CategoriesSidebar'
 import CategoriesSlider from '@/components/frontend/CategoriesSlider'
 import Herobox from '@/components/frontend/Herobox'
@@ -11,6 +12,7 @@ const Home = () => {
       <Herobox />
       </div>
       <CategoriesSlider />
+      <BestSellers />
     </div>
   )
 }
