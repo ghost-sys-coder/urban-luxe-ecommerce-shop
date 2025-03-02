@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import toast, { Toaster } from 'react-hot-toast';
 import { toastErrorOptions, toastSuccessOptions } from '@/constants';
@@ -17,6 +17,7 @@ import ProductCategory from '@/components/shared/ProductCategory';
 import { useCategories } from '@/providers/context/CategoriesContext';
 import TipTap from '@/components/shared/TipTap';
 import { Edit } from 'lucide-react';
+import ProductImages from './ProductImages';
 
 
 
@@ -55,6 +56,7 @@ const formSchema = z.object({
 const ProductUpdateForm = () => {
   const [isFetchingProduct, setIsFetchingProduct] = useState<boolean>(false);
   const [isUpdatingProduct, setIsUpdatingProduct] = useState<boolean>(false);
+  const [productImagesArray, setProductImagesArray] = useState<{ product_id: string; url: string}[]>([]);
 
   const pathname = usePathname();
   const router = useRouter();
@@ -84,40 +86,45 @@ const ProductUpdateForm = () => {
     fetchCategories();
   }, [fetchCategories])
 
+  const getProduct = useCallback(async () => {
+    setIsFetchingProduct(true)
+    try {
+      const { data, error } = await supabase.from("product").select("*, productImages(product_id, url)").eq("id", productId).single();
+
+      if (error) {
+        console.error("Error fetching product", error);
+        toast.error("Failed to fetch product", toastErrorOptions);
+        return null;
+      }
+
+      if (data) {
+        form.setValue("name", data.name);
+        form.setValue("price", data.price);
+        form.setValue("brand", data.brand);
+        form.setValue("color", data.color);
+        form.setValue("stock_units", data.stock_units);
+        form.setValue("units_sold", data.units_sold);
+        form.setValue("category", data.category);
+        form.setValue("size", data.size);
+        form.setValue("description", data.description);
+      }
+
+      // if product images existed
+      if (data && data?.productImages) {
+        setProductImagesArray(data?.productImages);
+      }
+
+    } catch (error) {
+      console.log("Failed to fetch product with id:" + productId, error);
+      return null;
+    } finally {
+      setIsFetchingProduct(false);
+    }
+  }, [form, productId])
 
   useEffect(() => {
-    const getProduct = async () => {
-      setIsFetchingProduct(true)
-      try {
-        const { data, error } = await supabase.from("product").select("*, productImages(product_id, url)").eq("id", productId).single();
-
-        if (error) {
-          console.error("Error fetching product", error);
-          toast.error("Failed to fetch product", toastErrorOptions);
-          return null;
-        }
-
-        if (data) {
-          form.setValue("name", data.name);
-          form.setValue("price", data.price);
-          form.setValue("brand", data.brand);
-          form.setValue("color", data.color);
-          form.setValue("stock_units", data.stock_units);
-          form.setValue("units_sold", data.units_sold);
-          form.setValue("category", data.category);
-          form.setValue("size", data.size);
-          form.setValue("description", data.description);
-        }
-      } catch (error) {
-        console.log("Failed to fetch product with id:" + productId, error);
-        return null;
-      } finally {
-        setIsFetchingProduct(false);
-      }
-    };
-
     getProduct();
-  }, [productId, form])
+  },[getProduct])
 
 
   // Define a submit handler
@@ -136,7 +143,7 @@ const ProductUpdateForm = () => {
       toast.success("Product successfully updated!", toastSuccessOptions);
 
       // run this piece of code after 3 seconds
-      setInterval(() => {
+      setTimeout(() => {
         router.push("/admin")
       }, 3000);
     } catch (error) {
@@ -230,6 +237,14 @@ const ProductUpdateForm = () => {
                 onChange={(newContent) => {
                   form.setValue("description", newContent)
                 }}
+              />
+            </div>
+            <div className="my-10">
+              <h2 className='text-sm font-thin text-left pb-1'>Edit Product Images</h2>
+              <ProductImages
+                images={productImagesArray}
+                id={productId}
+                setImages={setProductImagesArray}
               />
             </div>
             <Button

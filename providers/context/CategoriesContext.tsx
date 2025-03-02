@@ -37,7 +37,6 @@ export const CategoryProvider: React.FC<{children: ReactNode}> = ({children}) =>
                 toast.error("Failed to fetch Categories", toastErrorOptions);
                 return;
             } else {
-                console.log(data);
                 setCategories(data || []);
             }
         } catch (error) {
