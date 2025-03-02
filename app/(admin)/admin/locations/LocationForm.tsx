@@ -1,14 +1,12 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
-import toast, { Toaster } from 'react-hot-toast';
+import React from 'react'
+import { Toaster } from 'react-hot-toast';
 import { Loader, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { toastErrorOptions, toastSuccessOptions } from '@/constants';
-import { Areas, District } from '@/types/global'
-import { supabase } from '@/utils/supabase/client';
+
 
 import {
     Select,
@@ -19,122 +17,16 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
+import { useLocation } from '@/providers/context/LocationContext';
 
 const LocationForm = () => {
-    
-    useEffect(() => {
-        handleFetchDistricts();
-    }, [])
-
-
-    // create districts 
-    const handleCreateDistricts = async () => {
-
-        if (!newDistrict.trim()) {
-            return toast.error("The district field is required!", toastErrorOptions);
-        }
-
-        setIsCreatingDistricts(true);
-
-        try {
-            const { error } = await supabase.from("districts").insert([{ district: newDistrict }]);
-
-            if (error) {
-                console.log("Failed to create a district", error);
-                toast.error("Failed to create a district", toastErrorOptions);
-            }
-           
-            toast.success("District has been addedd!", toastSuccessOptions);
-
-            handleFetchDistricts();
-            setNewDistrict("")
-
-        } catch (error) {
-            console.log("An error occured!", error);
-            toast.error("Something went wrong!", toastErrorOptions);
-        } finally {
-            setIsCreatingDistricts(false);
-        }
-    }
-
-    // handle fetch products
-    const handleFetchDistricts = async () => {
-        setIsFetchingDistricts(true);
-
-        try {
-            const { data, error } = await supabase.from("districts").select("*");
-
-            if (error) {
-                console.log("Failed to fetch districts", error);
-                toast.error("Failed to fetch districts", toastErrorOptions);
-            }
-            setDistricts(data || []);
-        } catch (error) {
-            console.log("An error occurred!", error);
-            toast.error("An error occurred!", toastErrorOptions);
-        } finally {
-            setIsFetchingDistricts(false);
-        }
-    }
-
-
-    // create new areas
-    const handleCreateAreas = async () => {
-
-        if (!selectedDistrict) {
-            return toast.error("Select a district", toastErrorOptions);
-        }
-
-        if (!newArea.trim()) {
-            return toast.error("The area cannot be empty!", toastErrorOptions);
-        }
-        setIsCreatingAreas(true);
-
-        try {
-            const { error } = await supabase.from("areas").insert([{
-                area: newArea,
-                district_id: selectedDistrict
-            }]);
-
-            if (error) {
-                console.log("Failed to create a new area", error);
-                toast.error("Failed to create a new area", toastErrorOptions);
-                return;
-            }
-
-            toast.success("New area has been added!", toastSuccessOptions);
-
-            handleFetchAreas();
-            setNewArea("")
-
-        } catch (error) {
-            console.log("An error occured!", error);
-            toast.error("Something went wrong!", toastErrorOptions);
-            return;
-        } finally {
-            setIsCreatingAreas(false);
-        }
-    }
-
-    // handle fetch areas
-    const handleFetchAreas = async () => {
-        setIsFetchingAreas(true);
-
-        try {
-            const { data, error } = await supabase.from("districts").select("*");
-
-            if (error) {
-                console.log("Failed to fetch areas", error);
-                toast.error("Failed to fetch areas", toastErrorOptions);
-            }
-            setAreas(data || []);
-        } catch (error) {
-            console.log("An error occurred!", error);
-            toast.error("An error occurred!", toastErrorOptions);
-        } finally {
-            setIsFetchingAreas(false);
-        }
-    }
+    const {
+        newDistrict, newArea, setSelectedDistrict,
+        setNewDistrict, setNewArea,
+        isCreatingAreas, isCreatingDistricts, 
+        handleCreateAreas, handleCreateDistricts,
+        districts
+    } = useLocation();
     return (
         <div className='w-full'>
             <Toaster />
@@ -165,13 +57,13 @@ const LocationForm = () => {
 
             <div className="mt-5">
                 <Label htmlFor='area'>Add a new Area</Label>
-                <Select onValueChange={setSelectedDistrict}>
+                <Select onValueChange={(value) => setSelectedDistrict(value ?? null)}>
                     <SelectTrigger className="w-[300px]">
                         <SelectValue placeholder="Select District or Region" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            {districts.length > 0 && (
+                            {districts?.length > 0 && (
                                 districts.map(({ district, id}) => (
                                     <SelectItem key={id} value={id}>{district}</SelectItem>
                                 ))

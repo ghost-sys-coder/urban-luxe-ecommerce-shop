@@ -5,6 +5,7 @@ import { UserProvider } from "@/providers/context/UserContext";
 import "./globals.css";
 import { CategoryProvider } from "@/providers/context/CategoriesContext";
 import { ProductProvider } from "@/providers/context/ProductsContext";
+import { LocationProvider } from "@/providers/context/LocationContext";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -30,9 +31,11 @@ export default function RootLayout({
         >
           <UserProvider>
             <ProductProvider>
-              <CategoryProvider>
-                <main>{children}</main>
-              </CategoryProvider>
+              <LocationProvider>
+                <CategoryProvider>
+                  <main>{children}</main>
+                </CategoryProvider>
+              </LocationProvider>
             </ProductProvider>
           </UserProvider>
         </body>
