@@ -62,7 +62,7 @@ const CategoriesSlider = () => {
   }
 
   return (
-    <div className="relative my-10">
+    <div className="relative my-10 py-5">
       {/* Navigation Controls */}
       <button type="button" ref={prevRef} className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
         <ArrowLeftCircle className="w-10 h-10 text-primary hover:text-black" />

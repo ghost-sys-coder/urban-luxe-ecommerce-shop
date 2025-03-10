@@ -49,7 +49,8 @@ const formSchema = z.object({
   size: z.string(),
   description: z.string().min(4, {
     message: "Product Description is required",
-  })
+  }),
+  tags: z.string().optional()
 })
 
 
@@ -77,7 +78,8 @@ const ProductUpdateForm = () => {
       units_sold: 0,
       category: "",
       size: "",
-      description: ""
+      description: "",
+      tags: ""
     }
   });
 
@@ -107,6 +109,7 @@ const ProductUpdateForm = () => {
         form.setValue("category", data.category);
         form.setValue("size", data.size);
         form.setValue("description", data.description);
+        form.setValue("tags", data.tags);
       }
 
       // if product images existed
@@ -239,6 +242,13 @@ const ProductUpdateForm = () => {
                 }}
               />
             </div>
+            <EditProductInputComponent
+              name='tags'
+              label='Product Tags'
+              description="Separate tags with commas ie Men's Clothing, Shoes"
+              placeholder="Men's Shoes, Shoes"
+              form={form}
+            />
             <div className="my-10">
               <h2 className='text-sm font-thin text-left pb-1'>Edit Product Images</h2>
               <ProductImages

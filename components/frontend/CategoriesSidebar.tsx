@@ -14,7 +14,6 @@ const CategoriesSidebar = () => {
         setIsLoading(true);
         try {
             const { data, error } = await supabase.from("category").select("*");
-            console.log(data);
 
             if (error) {
                 console.log("Error fetching categories", error);

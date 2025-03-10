@@ -55,6 +55,13 @@ export default {
           warm: "#FAF9F6",
           cool: "#F5F5F5",
         },
+        shades: {
+          DEFAULT: "#0e1111",
+          dark: "	#232b2b",
+          warm: "#353839",
+          cool: "#3b444b",
+          light: "#414a4c"
+        },
         theme: {
 			charcoal: "#1A1A1A1",
 			carbon_black: "#222222"

@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { cn } from '@/lib/utils'
 
 interface ProductBoxProps {
     id: string;
@@ -8,9 +9,10 @@ interface ProductBoxProps {
     name: string;
     formattedPrice: string;
     stock_units: number;
+    className?: string
 }
 
-export const ProductBox: React.FC<ProductBoxProps> = ({ id, firstImage, name, formattedPrice, stock_units }) => {
+export const ProductBox: React.FC<ProductBoxProps> = ({ id, firstImage, name, formattedPrice, stock_units, className }) => {
     return (
         <Link
             href={`/products/product/${id}`}
@@ -23,7 +25,7 @@ export const ProductBox: React.FC<ProductBoxProps> = ({ id, firstImage, name, fo
                 height={400}
                 className='w-full h-[200px] object-cover'
             />
-            <div className="pb-3 py-2">
+            <div className={cn(className, "pb-3 py-2")}>
                 <h3 className='text-gray-700 font-thin text-sm'>{name}</h3>
                 <h4 className='text-gray-700 font-thin py-1'>{formattedPrice}</h4>
                 <p className='text-gray-700 font-thin text-sm'>{stock_units} items left</p>

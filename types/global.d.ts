@@ -36,6 +36,7 @@ export interface Product {
   size?: string;
   color?: string;
   brand?: string;
+  tags?: string;
   productImages?: ProductsImage[];
 }
 

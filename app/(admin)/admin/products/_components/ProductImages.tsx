@@ -24,8 +24,11 @@ const ProductImages: React.FC<ProductImagesComponentProps> = ({ images, id, setI
     // Handle delete product images
     const handleDeleteProductImages = async (productId: string, url: string) => {
         try {
+
             // Extract the file path from the URL
-            const filePath = url.split('/productImages')[1];
+            // const filePath = url.split('/productImages')[1];
+            const filePath = "/product/14/Screenshot 2025-03-02 154208.png";
+            console.log(filePath)
 
             if (!filePath) {
                 console.log("Invalid file path extracted from URL:", url);

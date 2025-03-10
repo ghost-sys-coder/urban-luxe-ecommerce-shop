@@ -16,7 +16,7 @@ const BestSellers = () => {
 
     return (
         <div
-            className='w-full my-10 md:px-10'
+            className='w-full my-10 py-10 md:px-10'
         >
             <h2 className='font-medium text-center pb-4 text-2xl'>Best Sellers</h2>
             {isLoadingBestSellers ? (

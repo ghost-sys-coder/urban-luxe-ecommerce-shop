@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import Navbar from '@/components/shared/Navbar'
+import Footer from '@/components/frontend/Footer';
 
 const FrontendLayout = ({ children }: { children: ReactNode }) => {
 
@@ -7,6 +8,7 @@ const FrontendLayout = ({ children }: { children: ReactNode }) => {
         <main className='root'>
             <Navbar />
             {children}
+            <Footer />
         </main>
     )
 }
